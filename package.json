@@ -1,0 +1,16 @@
+{
+  "name": "spotify-connect",
+  "version": "1.0.0",
+  "description": "Test de connexion Spotify OAuth",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "EpicKiwi <me@epickiwi.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
