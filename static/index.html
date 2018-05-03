@@ -14,6 +14,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: sans-serif;
+        }
+
+        pre {
+            text-align: left;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .hidden {
+            display: none;
         }
 
         .modal-title {
@@ -24,14 +35,30 @@
             width: 50%;
             text-align: center;
         }
+
+        .modal-login {
+            display: block;
+            padding: 10px;
+            background-color: #1DB94C;
+            color: white;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
-    <div class="modal">
+    <div class="modal" id="login-modal">
         <h1 class="modal-title">Login to Spotify</h1>
-        <a class="modal-login" href="/login">Login</a>
+        <a class="modal-login" href="#" id="login-button">Login</a>
     </div>
 
+    <div class="modal hidden" id="logged-modal">
+        <h1 class="modal-title">Welcome to the App <span id="user-name"></span></h1>
+        <pre id="user-object"></pre>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js" ></script>
 </body>
 </html>

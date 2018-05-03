@@ -1,17 +1,11 @@
 const express = require("express")
 const config = require("./config")
 const rp = require("request-promise-native")
+const SocketIo = require("socket.io")
 
 const app = express();
-
-app.get("/login",(req,res) => {
-    console.log("User request to login")
-
-    let accessDataTokenUrl = `https://accounts.spotify.com/authorize?client_id=${config.spotify.clientId}&response_type=code&redirect_uri=http://localhost:8080/authorized&show_dialog=true`
-
-    res.redirect(accessDataTokenUrl)
-
-})
+const http = require("http").createServer(app)
+const io = SocketIo(http)
 
 app.get("/authorized",async (req,res) => {
 
@@ -21,11 +15,8 @@ app.get("/authorized",async (req,res) => {
         return
     }
 
-    let authorization = new Buffer(config.spotify.clientId+":"+config.spotify.clientSecret).toString("base64")
-
     console.log("User login authorized")
     console.log("Authorization code : "+req.query.code)
-    console.log("Authorization : "+authorization)
 
         let token = await rp.post({
             url: "https://accounts.spotify.com/api/token", form: {
@@ -46,12 +37,18 @@ app.get("/authorized",async (req,res) => {
 
     console.log("Successful login of "+user.id)
 
-    res.send(`Welcome to the app ${user.id} !`)
+    res.send(`Sucessful login`)
+
+    io.to(req.query.state).emit("loggedin",user)
 
 })
 
 app.use("/",express.static(__dirname+"/static"))
 
-app.listen(8080,() => {
+io.on("connection", (socket) => {
+    console.log("Socket connected")
+})
+
+http.listen(8080,() => {
     console.log("Listening...")
 })
